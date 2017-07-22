@@ -40,7 +40,8 @@ ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventS
 
 IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 {
-	exRecordHandler->ProcessHeader(header);
+	if(exRecordHandler)
+		exRecordHandler->ProcessHeader(header);
 	switch (header.type)
 	{
 	case(GroupVariationType::STATIC) :
@@ -54,13 +55,15 @@ IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 
 IINField ReadHandler::ProcessHeader(const RangeHeader& header)
 {
-	exRecordHandler->ProcessHeader(header);
+	if(exRecordHandler)
+		exRecordHandler->ProcessHeader(header);
 	return pStaticSelector->SelectRange(header.enumeration, header.range);
 }
 
 IINField ReadHandler::ProcessHeader(const CountHeader& header)
 {
-	exRecordHandler->ProcessHeader(header);
+	if(exRecordHandler)
+		exRecordHandler->ProcessHeader(header);
 	return pEventSelector->SelectCount(header.enumeration, header.count);
 }
 
