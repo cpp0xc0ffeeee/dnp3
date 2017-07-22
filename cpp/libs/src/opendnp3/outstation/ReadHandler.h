@@ -30,6 +30,8 @@
 
 #include <openpal/logging/Logger.h>
 
+#include <dnp3ex/RecordHandler.hpp>
+
 namespace opendnp3
 {
 
@@ -38,6 +40,8 @@ class ReadHandler : public IAPDUHandler
 public:
 
 	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
+	
+	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector, const std::shared_ptr<dnp3ex::RecordHandler>& exHandler);
 
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
@@ -54,6 +58,7 @@ private:
 
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
+	std::shared_ptr<dnp3ex::RecordHandler> exRecordHandler;
 
 };
 

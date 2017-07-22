@@ -33,6 +33,8 @@
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
+#include <dnp3ex/RecordHandler.hpp>
+
 #include "asiopal/IResourceManager.h"
 
 #include "IMaster.h"
@@ -97,6 +99,11 @@ public:
 	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	        std::shared_ptr<opendnp3::IOutstationApplication> application,
 	        const OutstationStackConfig& config) = 0;
+	        
+	virtual std::shared_ptr<IOutstation>  AddOutstation( const std::string& id,
+	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	        std::shared_ptr<opendnp3::IOutstationApplication> application,
+	        const OutstationStackConfig& config, std::shared_ptr<dnp3ex::RecordHandler> exHandler) = 0;
 
 };
 

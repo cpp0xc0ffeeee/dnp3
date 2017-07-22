@@ -74,6 +74,11 @@ public:
 	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
 	        std::shared_ptr<opendnp3::IOutstationApplication> application,
 	        const OutstationStackConfig& config) override;
+	        
+    virtual std::shared_ptr<IOutstation> AddOutstation(const std::string& id,
+	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+	        std::shared_ptr<opendnp3::IOutstationApplication> application,
+	        const OutstationStackConfig& config, std::shared_ptr<dnp3ex::RecordHandler> exHandler) override;
 
 private:
 

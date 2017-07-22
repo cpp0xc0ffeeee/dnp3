@@ -76,6 +76,37 @@ OContext::OContext(
 
 }
 
+OContext::OContext(
+    const OutstationConfig& config,
+    const DatabaseSizes& dbSizes,
+    const openpal::Logger& logger,
+    const std::shared_ptr<openpal::IExecutor>& executor,
+    const std::shared_ptr<ILowerLayer>& lower,
+    const std::shared_ptr<ICommandHandler>& commandHandler,
+    const std::shared_ptr<IOutstationApplication>& application,
+    const std::shared_ptr<dnp3ex::RecordHandler>& exHandler) :
+
+	logger(logger),
+	executor(executor),
+	lower(lower),
+	commandHandler(commandHandler),
+	application(application),
+	eventBuffer(config.eventBufferConfig),
+	database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
+	rspContext(database.GetResponseLoader(), eventBuffer),
+	params(config.params),
+	isOnline(false),
+	isTransmitting(false),
+	staticIIN(IINBit::DEVICE_RESTART),
+	confirmTimer(*executor),
+	deferred(config.params.maxRxFragSize),
+	sol(config.params.maxTxFragSize),
+	unsol(config.params.maxTxFragSize),
+	exRecordHandler(exHandler)
+{
+
+}
+
 bool OContext::OnLowerLayerUp()
 {
 	if (isOnline)

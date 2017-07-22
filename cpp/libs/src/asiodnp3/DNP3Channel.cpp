@@ -129,6 +129,13 @@ std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, s
 	return this->AddStack(config.link, stack);
 }
 
+std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config, std::shared_ptr<dnp3ex::RecordHandler> exHandler)
+{
+	auto stack = OutstationStack::Create(this->logger.Detach(id), this->executor, commandHandler, application, this->iohandler, this->resources, config, exHandler);
+
+	return this->AddStack(config.link, stack);
+}
+
 template <class T>
 std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {

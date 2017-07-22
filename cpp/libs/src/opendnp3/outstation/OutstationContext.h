@@ -42,6 +42,8 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Pair.h>
 
+#include <dnp3ex/RecordHandler.hpp>
+
 namespace opendnp3
 {
 
@@ -63,6 +65,15 @@ public:
 	            const std::shared_ptr<ILowerLayer>& lower,
 	            const std::shared_ptr<ICommandHandler>& commandHandler,
 	            const std::shared_ptr<IOutstationApplication>& application);
+	            
+	OContext(	const OutstationConfig& config,
+	            const DatabaseSizes& dbSizes,
+	            const openpal::Logger& logger,
+	            const std::shared_ptr<openpal::IExecutor>& executor,
+	            const std::shared_ptr<ILowerLayer>& lower,
+	            const std::shared_ptr<ICommandHandler>& commandHandler,
+	            const std::shared_ptr<IOutstationApplication>& application,
+	            const std::shared_ptr<dnp3ex::RecordHandler>& exHandler);
 
 	/// ----- Implement IUpperLayer ------
 
@@ -186,6 +197,11 @@ private:
 	OutstationSolState  sol;
 	OutstationUnsolState unsol;
 	OutstationState* state = &StateIdle::Inst();
+	
+	
+	//dnp3ex
+	std::shared_ptr<dnp3ex::RecordHandler> exRecordHandler;
+
 };
 
 

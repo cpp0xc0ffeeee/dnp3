@@ -63,6 +63,34 @@ OutstationStack::OutstationStack(
 	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
 }
 
+OutstationStack::OutstationStack(
+    const Logger& logger,
+    const std::shared_ptr<Executor>& executor,
+    const std::shared_ptr<ICommandHandler>& commandHandler,
+    const std::shared_ptr<IOutstationApplication>& application,
+    const std::shared_ptr<IOHandler>& iohandler,
+    const std::shared_ptr<IResourceManager>& manager,
+    const OutstationStackConfig& config,
+    const std::shared_ptr<dnp3ex::RecordHandler>& exHandler) :
+
+	StackBase(logger, executor, application, iohandler, manager, config.outstation.params.maxRxFragSize, config.link),
+	ocontext(config.outstation, config.dbConfig.sizes, logger, executor, tstack.transport, commandHandler, application, exHandler)
+{
+	this->tstack.transport->SetAppLayer(ocontext);
+
+	// apply the database configuration
+	auto view = ocontext.GetConfigView();
+
+	assign(config.dbConfig.binary, view.binaries);
+	assign(config.dbConfig.doubleBinary, view.doubleBinaries);
+	assign(config.dbConfig.analog, view.analogs);
+	assign(config.dbConfig.counter, view.counters);
+	assign(config.dbConfig.frozenCounter, view.frozenCounters);
+	assign(config.dbConfig.boStatus, view.binaryOutputStatii);
+	assign(config.dbConfig.aoStatus, view.analogOutputStatii);
+	assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
+}
+
 
 bool OutstationStack::Enable()
 {

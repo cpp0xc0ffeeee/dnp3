@@ -21,6 +21,8 @@
 #ifndef ASIODNP3_OUTSTATIONSTACK_H
 #define ASIODNP3_OUTSTATIONSTACK_H
 
+#include <dnp3ex/RecordHandler.hpp>
+
 #include "asiodnp3/IOutstation.h"
 
 #include "asiopal/Executor.h"
@@ -48,6 +50,16 @@ public:
 	    const std::shared_ptr<IOHandler>& iohandler,
 	    const std::shared_ptr<asiopal::IResourceManager>& manager,
 	    const OutstationStackConfig& config);
+	    
+	OutstationStack(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
+	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
+	    const OutstationStackConfig& config,
+	    const std::shared_ptr<dnp3ex::RecordHandler>& exHandler);
 
 	static std::shared_ptr<OutstationStack> Create(
 	    const openpal::Logger& logger,
@@ -60,6 +72,24 @@ public:
 	)
 	{
 		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, manager, config);
+
+		ret->tstack.link->SetRouter(*ret);
+
+		return ret;
+	}
+	
+	static std::shared_ptr<OutstationStack> Create(
+	    const openpal::Logger& logger,
+	    const std::shared_ptr<asiopal::Executor>& executor,
+	    const std::shared_ptr<opendnp3::ICommandHandler>& commandHandler,
+	    const std::shared_ptr<opendnp3::IOutstationApplication>& application,
+	    const std::shared_ptr<IOHandler>& iohandler,
+	    const std::shared_ptr<asiopal::IResourceManager>& manager,
+	    const OutstationStackConfig& config,
+	    const std::shared_ptr<dnp3ex::RecordHandler>& exHandler
+	)
+	{
+		auto ret = std::make_shared<OutstationStack>(logger, executor, commandHandler, application, iohandler, manager, config, exHandler);
 
 		ret->tstack.link->SetRouter(*ret);
 
