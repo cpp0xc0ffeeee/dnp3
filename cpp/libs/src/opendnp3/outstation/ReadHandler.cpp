@@ -30,7 +30,7 @@ ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventS
 
 }
 
-ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector, const std::shared_ptr<dnp3ex::RecordHandler>& exHandler) :
+ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector, dnp3ex::RecordHandler* exHandler) :
 	pStaticSelector(&staticSelector),
 	pEventSelector(&eventSelector),
 	exRecordHandler(exHandler)

@@ -42,7 +42,7 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Pair.h>
 
-#include <dnp3ex/RecordHandler.hpp>
+#include <dnp3ex/RecordHandler.h>
 
 namespace opendnp3
 {

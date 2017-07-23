@@ -33,7 +33,7 @@
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
-#include <dnp3ex/RecordHandler.hpp>
+#include <dnp3ex/RecordHandler.h>
 
 #include "asiopal/IResourceManager.h"
 

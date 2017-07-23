@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_OUTSTATIONSTACK_H
 #define ASIODNP3_OUTSTATIONSTACK_H
 
-#include <dnp3ex/RecordHandler.hpp>
+#include <dnp3ex/RecordHandler.h>
 
 #include "asiodnp3/IOutstation.h"
 
