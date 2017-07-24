@@ -558,7 +558,7 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
 	this->database.GetStaticSelector().Unselect();
 
-	ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
+	ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer, this->exRecordHandler.get());
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
