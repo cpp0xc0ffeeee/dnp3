@@ -25,7 +25,8 @@ namespace opendnp3
 
 ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector) :
 	pStaticSelector(&staticSelector),
-	pEventSelector(&eventSelector)
+	pEventSelector(&eventSelector),
+	exRecordHandler(nullptr)
 {
 
 }

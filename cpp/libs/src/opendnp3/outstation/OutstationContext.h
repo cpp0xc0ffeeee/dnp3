@@ -43,6 +43,7 @@
 #include <openpal/container/Pair.h>
 
 #include <dnp3ex/RecordHandler.h>
+#include <dnp3ex/UpdateHandler.h>
 
 namespace opendnp3
 {
@@ -200,7 +201,27 @@ private:
 	
 	
 	//dnp3ex
+	class ExUpdateHandler: public dnp3ex::UpdateHandler
+	{
+	private:
+		OContext* mThat;
+	public:
+		ExUpdateHandler(OContext* that)
+				:mThat(that)
+		{}
+		
+		void applyUpdates(const asiodnp3::Updates& updates) override
+		{
+			if (updates.IsEmpty())
+				return;
+			updates.Apply(mThat->database);
+		}
+		
+	};
+	
 	std::shared_ptr<dnp3ex::RecordHandler> exRecordHandler;
+	ExUpdateHandler exUpdateHandler;
+	
 
 };
 

@@ -71,7 +71,8 @@ OContext::OContext(
 	confirmTimer(*executor),
 	deferred(config.params.maxRxFragSize),
 	sol(config.params.maxTxFragSize),
-	unsol(config.params.maxTxFragSize)
+	unsol(config.params.maxTxFragSize),
+	exUpdateHandler(this)
 {
 
 }
@@ -102,7 +103,8 @@ OContext::OContext(
 	deferred(config.params.maxRxFragSize),
 	sol(config.params.maxTxFragSize),
 	unsol(config.params.maxTxFragSize),
-	exRecordHandler(exHandler)
+	exRecordHandler(exHandler),
+	exUpdateHandler(this)
 {
 
 }
@@ -558,15 +560,18 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 	this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
 	this->database.GetStaticSelector().Unselect();
 
+	exRecordHandler->startHandleRequest();
 	ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer, this->exRecordHandler.get());
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
+		exRecordHandler->beforeSendResponse(exUpdateHandler);
 		auto control = this->rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else
 	{
+		exRecordHandler->onParseError();
 		this->rspContext.Reset();
 		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 	}

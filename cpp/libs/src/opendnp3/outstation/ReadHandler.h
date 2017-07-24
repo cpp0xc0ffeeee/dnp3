@@ -31,6 +31,7 @@
 #include <openpal/logging/Logger.h>
 
 #include <dnp3ex/RecordHandler.h>
+#include <dnp3ex/UpdateHandler.h>
 
 namespace opendnp3
 {
