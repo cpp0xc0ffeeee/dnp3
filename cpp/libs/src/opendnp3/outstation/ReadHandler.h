@@ -42,8 +42,6 @@ public:
 
 	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
 	
-	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector, dnp3ex::RecordHandler* exHandler);
-
 	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
 		return true;
@@ -59,7 +57,6 @@ private:
 
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
-	dnp3ex::RecordHandler* exRecordHandler;
 
 };
 

@@ -25,24 +25,13 @@ namespace opendnp3
 
 ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector) :
 	pStaticSelector(&staticSelector),
-	pEventSelector(&eventSelector),
-	exRecordHandler(nullptr)
-{
-
-}
-
-ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector, dnp3ex::RecordHandler* exHandler) :
-	pStaticSelector(&staticSelector),
-	pEventSelector(&eventSelector),
-	exRecordHandler(exHandler)
+	pEventSelector(&eventSelector)
 {
 
 }
 
 IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 {
-	if(exRecordHandler)
-		exRecordHandler->ProcessHeader(header);
 	switch (header.type)
 	{
 	case(GroupVariationType::STATIC) :
@@ -56,15 +45,11 @@ IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 
 IINField ReadHandler::ProcessHeader(const RangeHeader& header)
 {
-	if(exRecordHandler)
-		exRecordHandler->ProcessHeader(header);
 	return pStaticSelector->SelectRange(header.enumeration, header.range);
 }
 
 IINField ReadHandler::ProcessHeader(const CountHeader& header)
 {
-	if(exRecordHandler)
-		exRecordHandler->ProcessHeader(header);
 	return pEventSelector->SelectCount(header.enumeration, header.count);
 }
 
