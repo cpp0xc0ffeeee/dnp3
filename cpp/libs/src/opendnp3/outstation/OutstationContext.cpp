@@ -564,12 +564,15 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 	auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{
-		exRecordHandler->beforeSendResponse(GetConfigView(), exUpdateHandler);
-		
-		this->rspContext.Reset();
-		this->eventBuffer.Unselect();
-		this->database.GetStaticSelector().Unselect();
-		ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
+		if(exRecordHandler)
+		{
+			exRecordHandler->beforeSendResponse(GetConfigView(), exUpdateHandler);
+			this->rspContext.Reset();
+			this->eventBuffer.Unselect();
+			this->database.GetStaticSelector().Unselect();
+			ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
+		}
+
 		APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 		
 		auto control = this->rspContext.LoadResponse(writer);
@@ -577,7 +580,8 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
 	}
 	else
 	{
-		exRecordHandler->onParseError();
+		if(exRecordHandler)
+			exRecordHandler->onParseError();
 		this->rspContext.Reset();
 		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 	}
